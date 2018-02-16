@@ -1,0 +1,41 @@
+version: "2"
+
+services:
+  namenode:
+    image: ikuai/hadoop
+    command: start-hadoop namenode
+    hostname: namenode
+    container_name: namenode
+    environment:
+      HDFS_USER: root
+    ports:
+      - "8020:8020"
+      - "8042:8042"
+      - "8088:8088"
+      - "8188:8188"
+      - "14000:14000"
+      - "50070:50070"
+      - "50075:50075"
+      - "10020:10020"
+      - "13562:13562"
+      - "19888:19888"
+    volumes:
+      - "./volumes/slaves:/usr/local/hadoop-2.8.3/etc/hadoop/slaves"
+  datanode1:
+    image: ikuai/hadoop
+    command: start-hadoop datanode namenode
+    hostname: datanode1
+    container_name: datanode1
+    environment:
+      HDFS_USER: root
+    links:
+      - namenode
+  slave1:
+    image: ikuai/hadoop
+    command: start-hadoop datanode namenode
+    hostname: slave1
+    container_name: slave1
+    environment:
+      HDFS_USER: root
+    links:
+      - namenode
